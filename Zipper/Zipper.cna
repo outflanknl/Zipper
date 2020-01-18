@@ -1,0 +1,25 @@
+#Zipper
+#author Cornelis de Plaa
+#@outflank.nl
+
+#register help
+beacon_command_register("zipper", "File and folder compression utility.",
+	"Compress files and folders from local and UNC paths.\n\n" .
+	"Synopsis: zipper [Full/UNC path]\n" .
+	"          zipper C:\\ImportantFolder\\LargeFile.ext\n" .
+	"          zipper C:\\ImportantFolder\n" .
+	"          zipper \\\\SERVER\\FileShare\\ImportantFolder\n");
+
+alias zipper {
+    local('$bid' '$args');
+	$bid = $1;
+    $args = substr($0, 7);
+
+    if ($args eq "") {
+		berror($bid, "Please specify a valid path.");
+		return;
+	}
+
+	blog($bid, "Let's start compressing, please wait...\n");
+    bdllspawn($bid, script_resource("Zipper.dll"), $args, "Zipper", 5000, false);
+}
